@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6C22D69E1E95541000431215 /* Board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C22D69C1E95541000431215 /* Board.cpp */; };
+		6CBDED161E97FE2C00F662A8 /* History.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CBDED141E97FE2C00F662A8 /* History.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,6 +27,9 @@
 		6C22D6841E94878100431215 /* Go */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Go; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C22D69C1E95541000431215 /* Board.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Board.cpp; sourceTree = "<group>"; };
 		6C22D69D1E95541000431215 /* Board.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Board.hpp; sourceTree = "<group>"; };
+		6CBDED141E97FE2C00F662A8 /* History.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = History.cpp; sourceTree = "<group>"; };
+		6CBDED151E97FE2C00F662A8 /* History.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = History.hpp; sourceTree = "<group>"; };
+		6CBDED171E97FE9C00F662A8 /* Move.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Move.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +64,9 @@
 			children = (
 				6C22D69C1E95541000431215 /* Board.cpp */,
 				6C22D69D1E95541000431215 /* Board.hpp */,
+				6CBDED171E97FE9C00F662A8 /* Move.hpp */,
+				6CBDED141E97FE2C00F662A8 /* History.cpp */,
+				6CBDED151E97FE2C00F662A8 /* History.hpp */,
 			);
 			path = Go;
 			sourceTree = "<group>";
@@ -122,6 +129,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CBDED161E97FE2C00F662A8 /* History.cpp in Sources */,
 				6C22D69E1E95541000431215 /* Board.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,23 +12,8 @@
 #include <vector>
 #include <tuple>
 
-
-enum Color {
-    WHITE = 0b10,
-    BLACK = 0b01,
-    NEITHER = 0b00
-};
-
-
-struct move_t {
-    
-    Color mover;
-    
-    std::tuple<size_t, size_t> placedPiece;
-    
-    std::vector<std::tuple<size_t, size_t>> killedPieces;
-};
-
+#include "Move.hpp"
+#include "History.hpp"
 
 class Board {
     
@@ -38,7 +23,9 @@ private:
     
     Color** board;
     
-    std::vector<move_t> history;
+    History history;
+        
+    void _clearBoard();
     
     void _setSquare(size_t x, size_t y);
     
@@ -46,9 +33,11 @@ private:
     
     void _applyMove(move_t move);
     
-    void _repealMove(move_t move);
+    void _repealMove(move_t antiMove);
     
-    bool _isValidMove(move_t move);
+    bool _isValidPlacement(Color player, size_t x, size_t y);
+    
+    move_t _generateMove(Color player, size_t x, size_t y);
     
     size_t _countLiberties();
     
@@ -60,7 +49,7 @@ public:
     
     ~Board();
     
-    void clearBoard();
+    void clear();
     
     bool move(Color player, size_t x, size_t y);
     
