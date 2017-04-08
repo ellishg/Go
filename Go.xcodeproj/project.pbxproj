@@ -9,10 +9,22 @@
 /* Begin PBXBuildFile section */
 		6C22D69E1E95541000431215 /* Board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C22D69C1E95541000431215 /* Board.cpp */; };
 		6CBDED161E97FE2C00F662A8 /* History.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CBDED141E97FE2C00F662A8 /* History.cpp */; };
+		6CBDED221E981F2700F662A8 /* TestGo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CBDED211E981F2700F662A8 /* TestGo.cpp */; };
+		6CBDED281E985E8900F662A8 /* Board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C22D69C1E95541000431215 /* Board.cpp */; };
+		6CBDED291E985E8900F662A8 /* History.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CBDED141E97FE2C00F662A8 /* History.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		6C22D6821E94878100431215 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		6CBDED1D1E981F2700F662A8 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -30,10 +42,19 @@
 		6CBDED141E97FE2C00F662A8 /* History.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = History.cpp; sourceTree = "<group>"; };
 		6CBDED151E97FE2C00F662A8 /* History.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = History.hpp; sourceTree = "<group>"; };
 		6CBDED171E97FE9C00F662A8 /* Move.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Move.hpp; sourceTree = "<group>"; };
+		6CBDED1F1E981F2700F662A8 /* Test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Test; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CBDED211E981F2700F662A8 /* TestGo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestGo.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		6C22D6811E94878100431215 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6CBDED1C1E981F2700F662A8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -47,6 +68,7 @@
 			isa = PBXGroup;
 			children = (
 				6C22D6861E94878100431215 /* Go */,
+				6CBDED201E981F2700F662A8 /* Test */,
 				6C22D6851E94878100431215 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -55,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				6C22D6841E94878100431215 /* Go */,
+				6CBDED1F1E981F2700F662A8 /* Test */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -69,6 +92,14 @@
 				6CBDED151E97FE2C00F662A8 /* History.hpp */,
 			);
 			path = Go;
+			sourceTree = "<group>";
+		};
+		6CBDED201E981F2700F662A8 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				6CBDED211E981F2700F662A8 /* TestGo.cpp */,
+			);
+			path = Test;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -91,6 +122,23 @@
 			productReference = 6C22D6841E94878100431215 /* Go */;
 			productType = "com.apple.product-type.tool";
 		};
+		6CBDED1E1E981F2700F662A8 /* Test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6CBDED231E981F2700F662A8 /* Build configuration list for PBXNativeTarget "Test" */;
+			buildPhases = (
+				6CBDED1B1E981F2700F662A8 /* Sources */,
+				6CBDED1C1E981F2700F662A8 /* Frameworks */,
+				6CBDED1D1E981F2700F662A8 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Test;
+			productName = Test;
+			productReference = 6CBDED1F1E981F2700F662A8 /* Test */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -101,6 +149,11 @@
 				ORGANIZATIONNAME = "Ellis Hoag";
 				TargetAttributes = {
 					6C22D6831E94878100431215 = {
+						CreatedOnToolsVersion = 8.3;
+						DevelopmentTeam = LMU38T4425;
+						ProvisioningStyle = Automatic;
+					};
+					6CBDED1E1E981F2700F662A8 = {
 						CreatedOnToolsVersion = 8.3;
 						DevelopmentTeam = LMU38T4425;
 						ProvisioningStyle = Automatic;
@@ -120,6 +173,7 @@
 			projectRoot = "";
 			targets = (
 				6C22D6831E94878100431215 /* Go */,
+				6CBDED1E1E981F2700F662A8 /* Test */,
 			);
 		};
 /* End PBXProject section */
@@ -131,6 +185,16 @@
 			files = (
 				6CBDED161E97FE2C00F662A8 /* History.cpp in Sources */,
 				6C22D69E1E95541000431215 /* Board.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6CBDED1B1E981F2700F662A8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CBDED281E985E8900F662A8 /* Board.cpp in Sources */,
+				6CBDED291E985E8900F662A8 /* History.cpp in Sources */,
+				6CBDED221E981F2700F662A8 /* TestGo.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,6 +306,28 @@
 			};
 			name = Release;
 		};
+		6CBDED241E981F2700F662A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = LMU38T4425;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = "-lboost_unit_test_framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		6CBDED251E981F2700F662A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = LMU38T4425;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = "-lboost_unit_test_framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -262,6 +348,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		6CBDED231E981F2700F662A8 /* Build configuration list for PBXNativeTarget "Test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6CBDED241E981F2700F662A8 /* Debug */,
+				6CBDED251E981F2700F662A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

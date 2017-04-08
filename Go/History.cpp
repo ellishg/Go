@@ -9,21 +9,14 @@
 #include "History.hpp"
 
 
-History::History() {
-    clear();
-}
-
-History::~History() {
-    
-}
-
 void History::clear() {
     moveList.clear();
+    iCurrentMove = 0;
 }
 
 void History::pushMove(move_t move) {
     
-    moveList.erase(moveList.begin() + iCurrentMove, moveList.end())
+    moveList.erase(moveList.begin() + iCurrentMove, moveList.end());
     
     moveList.push_back(move);
     

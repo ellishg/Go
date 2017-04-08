@@ -13,7 +13,7 @@
 #include <tuple>
 
 
-enum Color {
+enum Player {
     WHITE = 0b10,
     BLACK = 0b01,
     NEITHER = 0b00
@@ -24,12 +24,15 @@ struct move_t {
     
     move_t() : mover(NEITHER) {}
     
-    Color mover;
+    Player mover;
     
-    std::tuple<size_t, size_t> placedPiece;
+    std::tuple<int, int> placedStone;
     
-    std::vector<std::tuple<size_t, size_t>> killedPieces;
+    std::vector<std::tuple<int, int>> killedStones;
     
+    /**
+     *  @return True if the move is defined to be valid.
+     */
     bool isValid() {
         return mover != NEITHER;
     }

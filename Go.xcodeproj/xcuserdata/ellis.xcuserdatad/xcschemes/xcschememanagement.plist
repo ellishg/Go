@@ -3,10 +3,26 @@
 <plist version="1.0">
 <dict>
 	<key>SchemeUserState</key>
-	<dict/>
+	<dict>
+		<key>Go.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>Test.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
+	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>6C22D6831E94878100431215</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6CBDED1E1E981F2700F662A8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
