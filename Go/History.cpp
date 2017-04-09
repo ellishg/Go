@@ -8,38 +8,53 @@
 
 #include "History.hpp"
 
+History & History::operator=(const History & other) {
+    
+    if (this != &other) {
+        
+        moveList = other.moveList;
+        iNextMove = other.iNextMove;
+    }
+    
+    return *this;
+}
 
 void History::clear() {
     moveList.clear();
-    iCurrentMove = 0;
+    iNextMove = 0;
+}
+
+std::vector<move_t> History::getMoves() {
+    
+    return std::vector<move_t>(moveList.begin(), moveList.begin() + iNextMove);
 }
 
 void History::pushMove(move_t move) {
     
-    moveList.erase(moveList.begin() + iCurrentMove, moveList.end());
+    moveList.erase(moveList.begin() + iNextMove, moveList.end());
     
     moveList.push_back(move);
     
-    iCurrentMove++;
+    iNextMove++;
 }
 
 move_t History::popMove() {
     
-    if (iCurrentMove == 0) {
+    if (iNextMove == 0) {
         //No previous move
         return move_t();
     }
     
-    return moveList[--iCurrentMove];
+    return moveList[--iNextMove];
 }
 
 move_t History::nextMove() {
     
-    if (iCurrentMove == moveList.size()) {
+    if (iNextMove == moveList.size()) {
         //No next move
         return move_t();
     }
     
-    return moveList[++iCurrentMove];
+    return moveList[iNextMove++];
 }
 

@@ -7,8 +7,16 @@
 //
 
 #include "Board.hpp"
+#include <iostream>
 
 using namespace std;
+
+Player opponentPlayer(Player p) {
+    if (p != NEITHER) {
+        return (p == WHITE) ? BLACK : WHITE;
+    }
+    return NEITHER;
+}
 
 Board::Board(int _width, int _height, bool _prohibitSuicide) {
     
@@ -22,24 +30,54 @@ Board::Board(int _width, int _height, bool _prohibitSuicide) {
 }
 
 Board::~Board() {
+    
     delete [] board;
 }
 
+Board & Board::operator=(const Board & other) {
+    
+    if (this != &other) {
+        
+        width = other.width;
+        height = other.height;
+        prohibitSuicide = other.prohibitSuicide;
+        history = other.history;
+        nextToMove = other.nextToMove;
+        didJustPass = other.didJustPass;
+        
+        delete [] board;
+        board = new Player[width * height];
+        
+        for (size_t i = 0; i < width * height; i++) {
+            board[i] = other.board[i];
+        }
+    }
+    
+    return *this;
+}
+
 void Board::clear() {
+    
+    didJustPass = false;
+    
+    playerToMove = WHITE;
     
     history.clear();
     
     _clearBoard();
 }
 
-bool Board::move(Player p, int x, int y) {
+bool Board::move(int x, int y) {
     
-    move_t move = _generateMove(p, x, y);
+    move_t move = _generateMove(playerToMove, x - 1, y - 1);
 
     if (move.isValid()) {
         
+        history.pushMove(move);
         _applyMove(move);
-                
+        
+        didJustPass = false;
+        playerToMove = opponentPlayer(playerToMove);
         return true;
     }
     
@@ -72,8 +110,8 @@ bool Board::redo() {
     return true;
 }
 
-void Board::pass(Player p) {
-    
+void Board::pass() {
+    didJustPass = true;
 }
 
 set<tuple<int, int>> Board::_getAdjacent(Player p, int x, int y) {
@@ -132,7 +170,7 @@ set<tuple<int, int>> Board::_getConnected(int x, int y) {
     if (!_isOnBoard(x, y) || owner == NEITHER) {
         return set<tuple<int, int>>();
     }
- 
+    
     set<tuple<int, int>> connected;
     
     queue<tuple<int, int>> bag;
@@ -143,7 +181,7 @@ set<tuple<int, int>> Board::_getConnected(int x, int y) {
         auto stone = bag.front();
         bag.pop();
         
-        if (connected.find(stone) != connected.end()) {
+        if (connected.find(stone) == connected.end()) {
             connected.insert(stone);
             
             auto neighbors = _getAdjacent(owner, get<0>(stone), get<1>(stone));
@@ -159,7 +197,19 @@ set<tuple<int, int>> Board::_getConnected(int x, int y) {
 
 tuple<int, int> Board::getScore() {
     
-    return make_tuple(42, 42);
+    int blackScore = 0;
+    int whiteScore = 0;
+    
+    for (size_t i = 0; i < width * height; i++) {
+        if (board[i] == WHITE) {
+            whiteScore++;
+        }
+        else if (board[i] == BLACK) {
+            blackScore++;
+        }
+    }
+    
+    return make_tuple(whiteScore, blackScore);
 }
 
 void Board::_clearBoard() {
@@ -212,7 +262,7 @@ void Board::_repealMove(move_t antiMove) {
     
     _clearStone(x, y);
     
-    Player opponent = (antiMove.mover == WHITE) ? BLACK : WHITE;
+    Player opponent = opponentPlayer(antiMove.mover);
     
     for (auto recovered : antiMove.killedStones) {
         _setStone(opponent, get<0>(recovered), get<1>(recovered));
@@ -227,6 +277,7 @@ void Board::_repealMove(move_t antiMove) {
  *  Step 3: (Optional) Prohibition of suicide: A play is illegal
  *          if one or more stones of that player's color would be
  *          removed in Step 2 of that play.
+ *  TODO: Not yet implemented.
  *  Step 4: A play is illegal if it would have the effect (after
  *          all steps of the play have been completed) of creating
  *          a position that has occurred previously in the game.
@@ -241,7 +292,7 @@ move_t Board::_generateMove(Player p, int x, int y) {
             move.mover = p;
             move.placedStone = make_tuple(x, y);
             
-            Player opponent = (p == WHITE) ? BLACK : WHITE;
+            Player opponent = opponentPlayer(p);
             
             _setStone(p, x, y);
             
@@ -256,6 +307,7 @@ move_t Board::_generateMove(Player p, int x, int y) {
                 if (liberties.empty()) {
                     for (auto & killed : connected) {
                         move.killedStones.push_back(killed);
+                        _clearStone(get<0>(killed), get<1>(killed));
                     }
                 }
             }
@@ -266,7 +318,12 @@ move_t Board::_generateMove(Player p, int x, int y) {
                 
                 if (liberties.empty()) {
                     if (prohibitSuicide) {
+                        
+                        for (auto & killed : move.killedStones) {
+                            _setStone(opponent, get<0>(killed), get<1>(killed));
+                        }
                         _clearStone(x, y);
+                        
                         return move_t();
                     }
                     else {
@@ -277,10 +334,184 @@ move_t Board::_generateMove(Player p, int x, int y) {
                 }
             }
             
+            
+            for (auto & killed : move.killedStones) {
+                _setStone(opponent, get<0>(killed), get<1>(killed));
+            }
             _clearStone(x, y);
+            
             return move;
         }
     }
     
     return move_t();
+}
+
+/**
+ *  (
+ *  ;FF[4]
+ *  GM[1]
+ *  CA[iso-8859-1]
+ *  AP[EllisGo]
+ *  US[Ellis Hoag]
+ *  DT[TODAY'S DATE]
+ *  SZ[19]
+ *  HA[0]
+ *  KM[0.0]
+ *  ;B[aa];W[df];B[cd];...)
+ */
+char * Board::_serialize() {
+    
+    
+    const size_t headerLength = 94;
+    const size_t footerLength = 2;
+    const char header[headerLength + 1] =
+        "(\n"
+        ";FF[4]\n"
+        "GM[1]\n"
+        "CA[iso-8859-1]\n"
+        "AP[EllisGo]\n"
+        "US[Ellis Hoag]\n"
+        "DT[2017-04-09]\n" //TODO: Use today's date.
+        "SZ[19]\n"
+        "HA[0]\n"
+        "KM[0.0]\n"
+        ";";
+    const char footer[footerLength + 1] = ")\n";
+    
+    vector<move_t> moves = history.getMoves();
+    
+    size_t movesLength = moves.size() * 6;
+    size_t dataLength = movesLength + headerLength + footerLength;
+    char * data = (char *)malloc(dataLength + 1);
+    if (!data) {
+        return NULL;
+    }
+    data[dataLength] = '\0';
+    
+    sprintf(data, "%s", header);
+
+    size_t i = headerLength;
+    for (move_t move : moves) {
+    
+        char player = (move.mover == WHITE) ? 'W' : 'B';
+        char x = 'a' + get<0>(move.placedStone);
+        char y = 'a' + get<1>(move.placedStone);
+        
+        sprintf(data + i, "%c[%c%c];", player, x, y);
+        
+        i += 6;
+    }
+    
+    sprintf(data + i, "%s", footer);
+    
+    return data;
+}
+
+/**
+ *  (
+ *  ;FF[4]
+ *  GM[1]
+ *  CA[iso-8859-1]
+ *  AP[EllisGo]
+ *  US[Ellis Hoag]
+ *  DT[TODAY'S DATE]
+ *  SZ[19]
+ *  HA[0]
+ *  KM[0.0]
+ *  ;B[aa];W[df];B[cd];...)
+ */
+
+bool Board::_deserialize(char * data, size_t length) {
+    //TODO: Find an easy way to read the data.
+    return false;
+    
+    int format;
+    int gameType;
+    char something[10];
+    char program[10];
+    char user[20];
+    char date[10];
+    int boardSize;
+    int handicap;
+    float komi;
+    char moveString[length];
+    
+    //FIXME: This will not work as expected.
+    sscanf(data,
+           "("
+           ";FF[%d]"
+           "GM[%d]"
+           "CA[%s]"
+           "AP[%s]"
+           "US[%s]"
+           "DT[%s]"
+           "SZ[%i]"
+           "HA[%i]"
+           "KM[%f]"
+           ";%s)", &format, &gameType, something, program, user, date, &boardSize, &handicap, &komi, moveString);
+    
+    // Assume that we have correctly extracted moves.
+    
+    vector<move_t> moveList;
+    
+    Board newBoard(width, height, prohibitSuicide);
+    
+    for (move_t move : moveList) {
+        if (!newBoard.move(get<0>(move.placedStone), get<1>(move.placedStone))) {
+            return false;
+        }
+    }
+    
+    *this = newBoard;
+    return true;
+}
+
+bool Board::exportSGF(const char * dir) {
+    
+    char * data = _serialize();
+    
+    if (data) {
+        
+        FILE * file = fopen(dir, "w");
+        
+        if (!file) {
+            delete data;
+            perror("Error opening file");
+            return false;
+        }
+        
+        fprintf(file, "%s", data);
+        
+        fclose(file);
+        free(data);
+        
+        return true;
+    }
+    
+    return false;
+}
+
+bool Board::importSGF(const char * dir) {
+    
+    FILE * file = fopen(dir, "r");
+    
+    if (!file) {
+        perror("Error opening file");
+        return false;
+    }
+    
+    fseek(file, 0, SEEK_END);
+    size_t length = ftell(file);
+    fseek(file, 0, SEEK_SET);
+    char * data = (char *)malloc(length + 1);
+    data[length + 1] = '\0';
+    
+    fread((void *)data, 1, length, file);
+    
+    bool result = _deserialize(data, length);
+    
+    free(data);
+    
+    return result;
 }

@@ -10,6 +10,7 @@
 #define History_hpp
 
 #include <vector>
+#include <stdlib.h>
 
 #include "Move.hpp"
 
@@ -20,11 +21,13 @@ private:
     
     std::vector<move_t> moveList;
     
-    size_t iCurrentMove;
+    size_t iNextMove;
     
 public:
     
     History() {clear();}
+    
+    History & operator=(const History & other);
     
     /**
      *  Clears the history.
@@ -47,6 +50,11 @@ public:
      *  @return The next move in the history.
      */
     move_t nextMove();
+    
+    /**
+     *  @return An ordered vector of moves.
+     */
+    std::vector<move_t> getMoves();
 };
 
 

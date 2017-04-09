@@ -13,13 +13,15 @@
 #include <tuple>
 #include <set>
 #include <queue>
+#include <stdio.h>
 
 #include "Move.hpp"
 #include "History.hpp"
 
 class Board {
     
-private:
+//private:
+public:
     
     int width, height;
     
@@ -27,7 +29,9 @@ private:
     
     Player nextToMove;
     
-    Player didJustPass;
+    bool didJustPass;
+    
+    Player playerToMove;
     
     History history;
     
@@ -90,7 +94,7 @@ private:
     
     /**
      *  @param p The player whose move to generate.
-     *  @param x The x location of the peice.
+     *  @param x The x location of the piece.
      *  @param y The y location of the stone.
      *  @return A move_t that represent the move
      *              by player p at square (x, y).
@@ -115,11 +119,26 @@ private:
      */
     std::set<std::tuple<int, int>> _getConnected(int x, int y);
     
+    /**
+     *  @return A character array of the SGF file from the board.
+     */
+    char * _serialize();
+    
+    /**
+     *  The board will not be modified if the SGF file is invalid.
+     *  @param data The contents of the SGF file to be read.
+     *  @param length The length of data.
+     *  @return True if the board was modified.
+     */
+    bool _deserialize(char * data, size_t length);
+    
 public:
     
     Board(int _width = 19, int _height = 19, bool _prohibitSuicide = true);
     
     ~Board();
+    
+    Board & operator=(const Board & other);
     
     /**
      *  Initializes the board to start the game.
@@ -127,12 +146,11 @@ public:
     void clear();
     
     /**
-     *  @param p The player making the move.
      *  @param x The x location of the move.
      *  @param y The y location of the move.
      *  @return True if the move was successfully made.
      */
-    bool move(Player p, int x, int y);
+    bool move(int x, int y);
     
     /**
      *  Takes back the previous move and preserves history.
@@ -147,16 +165,30 @@ public:
     bool redo();
     
     /**
-     *  Player p passes instead of makes a move.
-     *  If the opponent also passes, player p loses.
-     *  @param p The player to pass.
+     *  The player passes instead of makes a move.
+     *  If the opponent also passes, the player
+     *  to originally pass looses.
      */
-    void pass(Player p);
+    void pass();
     
     /**
      *
      */
     std::tuple<int, int> getScore();
+    
+    /**
+     *  @param dir The directory to save the SGF file to.
+     *  @return True if the file was sucessfully saved.
+     *              There is no affect if false was returned.
+     */
+    bool exportSGF(const char * dir);
+    
+    /**
+     *  @param dir The directory to read teh SGF file from.
+     *  @return True if the file was sucessfully loaded.
+     *              There is no affect if false was returned.
+     */
+    bool importSGF(const char * dir);
 };
 
 

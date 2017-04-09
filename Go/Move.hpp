@@ -22,7 +22,7 @@ enum Player {
 
 struct move_t {
     
-    move_t() : mover(NEITHER) {}
+    move_t() : mover(NEITHER), placedStone(std::make_tuple(-1, -1)) {}
     
     Player mover;
     
