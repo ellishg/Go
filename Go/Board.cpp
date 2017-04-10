@@ -362,21 +362,29 @@ move_t Board::_generateMove(Player p, int x, int y) {
  */
 char * Board::_serialize() {
     
+    time_t rawTime;
+    time(&rawTime);
+    struct tm * timeInfo = localtime(&rawTime);
+    
+    int year = timeInfo->tm_year + 1900;
+    int month = timeInfo->tm_mon + 1;
+    int day = timeInfo->tm_mday;
     
     const size_t headerLength = 94;
     const size_t footerLength = 2;
-    const char header[headerLength + 1] =
+    char header[headerLength + 1];
+    snprintf(header, headerLength + 1,
         "(\n"
         ";FF[4]\n"
         "GM[1]\n"
         "CA[iso-8859-1]\n"
         "AP[EllisGo]\n"
         "US[Ellis Hoag]\n"
-        "DT[2017-04-09]\n" //TODO: Use today's date.
-        "SZ[19]\n"
+        "DT[%04d-%02d-%02d]\n"
+        "SZ[%02d]\n"
         "HA[0]\n"
         "KM[0.0]\n"
-        ";";
+        ";", year, month, day, width);
     const char footer[footerLength + 1] = ")\n";
     
     vector<move_t> moves = history.getMoves();
@@ -423,42 +431,27 @@ char * Board::_serialize() {
  */
 
 bool Board::_deserialize(char * data, size_t length) {
-    //TODO: Find an easy way to read the data.
-    return false;
     
-    int format;
-    int gameType;
-    char something[10];
-    char program[10];
-    char user[20];
-    char date[10];
-    int boardSize;
-    int handicap;
-    float komi;
-    char moveString[length];
-    
-    //FIXME: This will not work as expected.
-    sscanf(data,
-           "("
-           ";FF[%d]"
-           "GM[%d]"
-           "CA[%s]"
-           "AP[%s]"
-           "US[%s]"
-           "DT[%s]"
-           "SZ[%i]"
-           "HA[%i]"
-           "KM[%f]"
-           ";%s)", &format, &gameType, something, program, user, date, &boardSize, &handicap, &komi, moveString);
-    
-    // Assume that we have correctly extracted moves.
-    
-    vector<move_t> moveList;
+    vector<tuple<int, int>> moveList;
+
+    const char * token = strtok(data, ";");
+    while (token) {
+        
+        if (token[1] == '[' && token[4] == ']') {
+            if (token[0] == 'B' || token[0] == 'W') {
+                int x = (int)(token[2] - 'a') + 1;
+                int y = (int)(token[3] - 'a') + 1;
+                moveList.push_back(make_tuple(x, y));
+            }
+        }
+        
+        token = strtok(NULL, ";");
+    }
     
     Board newBoard(width, height, prohibitSuicide);
     
-    for (move_t move : moveList) {
-        if (!newBoard.move(get<0>(move.placedStone), get<1>(move.placedStone))) {
+    for (tuple<int, int> move : moveList) {
+        if (!newBoard.move(get<0>(move), get<1>(move))) {
             return false;
         }
     }

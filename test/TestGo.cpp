@@ -136,8 +136,7 @@ BOOST_AUTO_TEST_CASE(testGame) {
     BOOST_TEST(myBoard.exportSGF("test.sgf"));
 }
 
-// TODO: Implement import.
-/*
+
 BOOST_AUTO_TEST_CASE(testImportSGF) {
     
     Board myBoard;
@@ -146,12 +145,9 @@ BOOST_AUTO_TEST_CASE(testImportSGF) {
     
     BOOST_REQUIRE(!myBoard.move(5, 5));
     
-    // TODO: Not yet implemented.
-    //BOOST_REQUIRE(!myBoard.move(0, 2));
-    
-    auto connected = myBoard._getConnected(10, 10);
+    auto connected = myBoard._getConnected(10 - 1, 10 - 1);
     BOOST_TEST(myBoard._getLiberties(connected).size() == 11);
-    connected = myBoard._getConnected(13, 11);
+    connected = myBoard._getConnected(13 - 1, 11 - 1);
     BOOST_TEST(myBoard._getLiberties(connected).size() == 10);
 }
-*/
+

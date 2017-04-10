@@ -14,6 +14,7 @@
 #include <set>
 #include <queue>
 #include <stdio.h>
+#include <time.h>
 
 #include "Move.hpp"
 #include "History.hpp"
