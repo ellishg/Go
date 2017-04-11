@@ -44,6 +44,7 @@ Board & Board::operator=(const Board & other) {
         history = other.history;
         nextToMove = other.nextToMove;
         didJustPass = other.didJustPass;
+        winner = other.winner;
         
         delete [] board;
         board = new Player[width * height];
@@ -59,6 +60,8 @@ Board & Board::operator=(const Board & other) {
 void Board::clear() {
     
     didJustPass = false;
+    
+    winner = NEITHER;
     
     playerToMove = WHITE;
     
@@ -111,6 +114,9 @@ bool Board::redo() {
 }
 
 void Board::pass() {
+    if (winner == NEITHER && didJustPass) {
+        winner = playerToMove;
+    }
     didJustPass = true;
 }
 
@@ -285,7 +291,7 @@ void Board::_repealMove(move_t antiMove) {
  */
 move_t Board::_generateMove(Player p, int x, int y) {
     
-    if (_isOnBoard(x, y) && p != NEITHER) {
+    if (winner == NEITHER && _isOnBoard(x, y) && p != NEITHER) {
         if (_getStoneOwner(x, y) == NEITHER) {
             
             move_t move;
@@ -507,4 +513,8 @@ bool Board::importSGF(const char * dir) {
     free(data);
     
     return result;
+}
+
+Player Board::hasWon() {
+    return winner;
 }

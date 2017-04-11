@@ -11,9 +11,17 @@
 #include <boost/test/included/unit_test.hpp>
 #include <boost/test/data/test_case.hpp>
 
-#include "Board.hpp"
 #include <iostream>
 #include <tuple>
+
+/**
+ *  HAHAHAHAHAHAHAHA
+ *  C++ is a funny language.
+ *  I want to test private methods.
+ *  And hopefully cause obscure bugs down the line.
+ **/
+#define private public
+#include "Board.hpp"
 
 static const int xLocs[] = {0, 4, 7, 1};
 static const int yLocs[] = {0, 5, 1, 18};
@@ -133,6 +141,10 @@ BOOST_AUTO_TEST_CASE(testGame) {
     BOOST_TEST(std::get<0>(score) == 17);
     BOOST_TEST(std::get<1>(score) == 15);
     
+    myBoard.pass();
+    myBoard.pass();
+    BOOST_TEST(myBoard.hasWon() == WHITE);
+    
     BOOST_TEST(myBoard.exportSGF("test.sgf"));
 }
 
@@ -149,5 +161,9 @@ BOOST_AUTO_TEST_CASE(testImportSGF) {
     BOOST_TEST(myBoard._getLiberties(connected).size() == 11);
     connected = myBoard._getConnected(13 - 1, 11 - 1);
     BOOST_TEST(myBoard._getLiberties(connected).size() == 10);
+    
+    myBoard.pass();
+    myBoard.pass();
+    BOOST_TEST(myBoard.hasWon() == WHITE);
 }
 

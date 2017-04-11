@@ -36,6 +36,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6C1589A41E9C6D620008CFA5 /* Docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Docs; sourceTree = SOURCE_ROOT; };
 		6C22D6841E94878100431215 /* Go */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Go; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C22D69C1E95541000431215 /* Board.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Board.cpp; sourceTree = "<group>"; };
 		6C22D69D1E95541000431215 /* Board.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Board.hpp; sourceTree = "<group>"; };
@@ -70,6 +71,7 @@
 				6C22D6861E94878100431215 /* Go */,
 				6CBDED201E981F2700F662A8 /* Test */,
 				6C22D6851E94878100431215 /* Products */,
+				6C1589A41E9C6D620008CFA5 /* Docs */,
 			);
 			sourceTree = "<group>";
 		};

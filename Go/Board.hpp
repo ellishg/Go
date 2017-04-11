@@ -21,8 +21,7 @@
 
 class Board {
     
-//private:
-public:
+private:
     
     int width, height;
     
@@ -31,6 +30,8 @@ public:
     Player nextToMove;
     
     bool didJustPass;
+    
+    Player winner;
     
     Player playerToMove;
     
@@ -171,6 +172,12 @@ public:
      *  to originally pass looses.
      */
     void pass();
+    
+    /**
+     *  @return The player that has won, or NEITHER if
+     *              no player has won yet.
+     */
+    Player hasWon();
     
     /**
      *
