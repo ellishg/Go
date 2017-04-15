@@ -7,3 +7,17 @@
 //
 
 #include "Sprite.hpp"
+
+using namespace std;
+
+Sprite::Sprite(Texture * texture, vector<SDL_Rect> rects) {
+    
+    _texture = texture;
+    _rects = rects;
+    state = 0;
+}
+
+void Sprite::render() {
+    
+    _texture->render(x, y, _rects[state], {x, y, width, height});
+}

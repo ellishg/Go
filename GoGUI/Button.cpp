@@ -10,35 +10,20 @@
 
 using namespace std;
 
-Button::Button(int x, int y, Texture * sprite, SDL_Rect clipUp, SDL_Rect clipDown, function<void()> pressed) {
+Button::Button(SDL_Rect tgt, Texture * texture, SDL_Rect clipUp, SDL_Rect clipDown, function<void()> pressed) : _sprite(texture, {clipUp, clipDown}) {
     
-    _x = x;
-    _y = y;
-    
-    _sprite = sprite;
-    _clipUp = clipUp;
-    _clipDown = clipDown;
-    _justPressed = false;
-    
+    _sprite.x = tgt.x;
+    _sprite.y = tgt.y;
+    _sprite.width = tgt.w;
+    _sprite.height = tgt.h;
+    _sprite.state = BUTTON_UP;
+        
     _pressed = pressed;
-    
-    _state = BUTTON_UP;
 }
 
 void Button::render() {
     
-    SDL_Rect clip;
-    
-    switch (_state) {
-        case BUTTON_UP:
-            clip = _clipUp;
-            break;
-        case BUTTON_DOWN:
-            clip = _clipDown;
-            break;
-    }
-    
-    _sprite->render(_x, _y, &clip);
+    _sprite.render();
 }
 
 void Button::handleEvent(SDL_Event * event) {
@@ -48,20 +33,18 @@ void Button::handleEvent(SDL_Event * event) {
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
         
-        if (_x < mouseX && mouseX < _sprite->getWidth()
-            && _y < mouseY && mouseY < _sprite->getHeight()) {
+        if (_sprite.x < mouseX && mouseX < _sprite.x + _sprite.width
+            && _sprite.y < mouseY && mouseY < _sprite.y + _sprite.height) {
             
             switch (event->type) {
                 case SDL_MOUSEBUTTONDOWN:
-                    _state = BUTTON_DOWN;
-                    if (!_justPressed) {
-                        _justPressed = true;
+                    if (_sprite.state == BUTTON_UP) {
+                        _sprite.state = BUTTON_DOWN;
                         _pressed();
                     }
                     break;
                 case SDL_MOUSEBUTTONUP:
-                    _state = BUTTON_UP;
-                    _justPressed = false;
+                    _sprite.state = BUTTON_UP;
                     break;
                 default:
                     break;

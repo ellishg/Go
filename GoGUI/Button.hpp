@@ -13,42 +13,32 @@
 #include <functional>
 
 #include "Texture.hpp"
+#include "Sprite.hpp"
 
 enum State {
-    BUTTON_UP,
-    BUTTON_DOWN
+    BUTTON_UP = 0,
+    BUTTON_DOWN = 1
 };
 
 class Button {
     
 private:
-    
-    int _x, _y;
-    
-    int _width, _height;
-    
-    bool _justPressed;
-    
-    Texture * _sprite;
-    
-    State _state;
-    
-    SDL_Rect _clipUp, _clipDown;
-
+                
+    Sprite _sprite;
+        
     std::function<void()> _pressed;
     
 public:
     
     /**
-     *  @param x The x location of the button.
-     *  @param y The y location of the button.
-     *  @param sprite The texture of the button.
+     *  @param tgt An SDL_Rect representing the location of the button.
+     *  @param texture The texture of the button.
      *  @param clipUp The clip of the sprite to render when the button is up.
      *  @param clipDown The clip of the sprite to render when the button is down.
      *  @param pressed A function to call when the button
      *                      has been pressed.
      */
-    Button(int x, int y, Texture * sprite, SDL_Rect clipUp, SDL_Rect clipDown, std::function<void()> pressed);
+    Button(SDL_Rect tgt, Texture * texture, SDL_Rect clipUp, SDL_Rect clipDown, std::function<void()> pressed);
     
     /**
      *  Renders the button.

@@ -20,9 +20,7 @@ private:
     SDL_Texture * _texture;
     
     SDL_Renderer * _renderer;
-    
-    int _width, _height;
-    
+        
     bool _isValid;
     
     /**
@@ -49,22 +47,12 @@ public:
      *  @param y The y location to render the texture.
      *  @param textureClip The clip of the texture to render.
      */
-    void render(int x, int y, SDL_Rect * textureClip);
+    void render(int x, int y, SDL_Rect textureClip, SDL_Rect tgtClip);
     
     /**
      *  @return True if the texture is valid.
      */
     bool isValid() { return _isValid; }
-    
-    /**
-     *  @return The width of the texture.
-     */
-    int getWidth() { return _width; }
-    
-    /**
-     *  @return The height of the texture.
-     */
-    int getHeight() { return _height; }
 };
 
 #endif /* Texture_hpp */

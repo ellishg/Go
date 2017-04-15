@@ -11,10 +11,13 @@
 
 #include <iostream>
 #include "SDL2/SDL.h"
+#include "SDL2_ttf/SDL_ttf.h"
 #include <vector>
 
 #include "Button.hpp"
 #include "Texture.hpp"
+#include "Sprite.hpp"
+#include "Text.hpp"
 
 class Window {
     
@@ -23,9 +26,13 @@ private:
     SDL_Window * _window;
     SDL_Renderer * _renderer;
     
-    std::vector<Button *> _buttons;
+    std::vector<Button> _buttons;
     
-    std::vector<Texture *> _textures;
+    std::vector<Sprite *> _sprites;
+    
+    std::vector<Text *> _texts;
+    
+    std::function<void(int, int)> _onMouseClick;
     
     bool _isValid;
     bool _isRunning;
@@ -54,23 +61,30 @@ public:
      *  Destroys the window.
      */
     ~Window();
-    
+        
     /**
      *  Adds button to the window.
      *  @param button The button to add to the window.
      */
-    void addButton(Button * button) { _buttons.push_back(button); }
+    void addButton(Button button) { _buttons.push_back(button); }
     
     /**
      *  Adds sprite to the window.
      *  @param sprite The sprite to add to the window.
      */
-    void addTexture(Texture * sprite) { _textures.push_back(sprite); }
+    void addSprite(Sprite * sprite) { _sprites.push_back(sprite); }
     
     /**
-     *
+     *  @param text The text to add to the window.
      */
-    void addEvent();
+    void addText(Text * text) { _texts.push_back(text); }
+    
+    /**
+     * @param onMouseClick The Function to run when the mouse has clicked.
+     */
+    void setMouseClick(std::function<void(int, int)> onMouseClick) {
+        _onMouseClick = onMouseClick;
+    }
     
     /**
      *  Launch the window with the current settings.
@@ -83,7 +97,17 @@ public:
      */
     bool isValid() { return _isValid; }
     
+    /**
+     *  @return A pointer to the renderer.
+     */
     SDL_Renderer * getRenderer() { return _renderer; }
+    
+    /**
+     *  Closes the window.
+     */
+    void quit() {
+        _isRunning = false;
+    }
 };
 
 #endif /* Window_hpp */
