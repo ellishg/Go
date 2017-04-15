@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		6C22D69E1E95541000431215 /* Board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C22D69C1E95541000431215 /* Board.cpp */; };
+		6C574EC01EA032EA00AEFCD6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C574EBF1EA032EA00AEFCD6 /* main.cpp */; };
+		6C574EC61EA0336700AEFCD6 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C574EC51EA0336700AEFCD6 /* SDL2.framework */; };
+		6C574EC91EA033DC00AEFCD6 /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C574EC71EA033DC00AEFCD6 /* Window.cpp */; };
+		6C574ECC1EA0446E00AEFCD6 /* Button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C574ECA1EA0446E00AEFCD6 /* Button.cpp */; };
+		6C574ECF1EA044FE00AEFCD6 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C574ECD1EA044FE00AEFCD6 /* Texture.cpp */; };
+		6C574ED11EA0631800AEFCD6 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C574ED01EA0631800AEFCD6 /* SDL2_image.framework */; };
+		6C574ED41EA0829500AEFCD6 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C574ED21EA0829500AEFCD6 /* Sprite.cpp */; };
 		6CBDED161E97FE2C00F662A8 /* History.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CBDED141E97FE2C00F662A8 /* History.cpp */; };
 		6CBDED221E981F2700F662A8 /* TestGo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CBDED211E981F2700F662A8 /* TestGo.cpp */; };
 		6CBDED281E985E8900F662A8 /* Board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C22D69C1E95541000431215 /* Board.cpp */; };
@@ -16,6 +23,15 @@
 
 /* Begin PBXCopyFilesBuildPhase section */
 		6C22D6821E94878100431215 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		6C574EBB1EA032EA00AEFCD6 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -40,6 +56,18 @@
 		6C22D6841E94878100431215 /* Go */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Go; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C22D69C1E95541000431215 /* Board.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Board.cpp; sourceTree = "<group>"; };
 		6C22D69D1E95541000431215 /* Board.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Board.hpp; sourceTree = "<group>"; };
+		6C574EBD1EA032EA00AEFCD6 /* GoGUI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GoGUI; sourceTree = BUILT_PRODUCTS_DIR; };
+		6C574EBF1EA032EA00AEFCD6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		6C574EC51EA0336700AEFCD6 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
+		6C574EC71EA033DC00AEFCD6 /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
+		6C574EC81EA033DC00AEFCD6 /* Window.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Window.hpp; sourceTree = "<group>"; };
+		6C574ECA1EA0446E00AEFCD6 /* Button.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Button.cpp; sourceTree = "<group>"; };
+		6C574ECB1EA0446E00AEFCD6 /* Button.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Button.hpp; sourceTree = "<group>"; };
+		6C574ECD1EA044FE00AEFCD6 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
+		6C574ECE1EA044FE00AEFCD6 /* Texture.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Texture.hpp; sourceTree = "<group>"; };
+		6C574ED01EA0631800AEFCD6 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
+		6C574ED21EA0829500AEFCD6 /* Sprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sprite.cpp; sourceTree = "<group>"; };
+		6C574ED31EA0829500AEFCD6 /* Sprite.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Sprite.hpp; sourceTree = "<group>"; };
 		6CBDED141E97FE2C00F662A8 /* History.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = History.cpp; sourceTree = "<group>"; };
 		6CBDED151E97FE2C00F662A8 /* History.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = History.hpp; sourceTree = "<group>"; };
 		6CBDED171E97FE9C00F662A8 /* Move.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Move.hpp; sourceTree = "<group>"; };
@@ -52,6 +80,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6C574EBA1EA032EA00AEFCD6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6C574ED11EA0631800AEFCD6 /* SDL2_image.framework in Frameworks */,
+				6C574EC61EA0336700AEFCD6 /* SDL2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,8 +107,10 @@
 			children = (
 				6C22D6861E94878100431215 /* Go */,
 				6CBDED201E981F2700F662A8 /* Test */,
+				6C574EBE1EA032EA00AEFCD6 /* GoGUI */,
 				6C22D6851E94878100431215 /* Products */,
 				6C1589A41E9C6D620008CFA5 /* Docs */,
+				6C574EC41EA0336700AEFCD6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -80,6 +119,7 @@
 			children = (
 				6C22D6841E94878100431215 /* Go */,
 				6CBDED1F1E981F2700F662A8 /* Test */,
+				6C574EBD1EA032EA00AEFCD6 /* GoGUI */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -94,6 +134,31 @@
 				6CBDED151E97FE2C00F662A8 /* History.hpp */,
 			);
 			path = Go;
+			sourceTree = "<group>";
+		};
+		6C574EBE1EA032EA00AEFCD6 /* GoGUI */ = {
+			isa = PBXGroup;
+			children = (
+				6C574EBF1EA032EA00AEFCD6 /* main.cpp */,
+				6C574EC71EA033DC00AEFCD6 /* Window.cpp */,
+				6C574EC81EA033DC00AEFCD6 /* Window.hpp */,
+				6C574ECA1EA0446E00AEFCD6 /* Button.cpp */,
+				6C574ECB1EA0446E00AEFCD6 /* Button.hpp */,
+				6C574ECD1EA044FE00AEFCD6 /* Texture.cpp */,
+				6C574ECE1EA044FE00AEFCD6 /* Texture.hpp */,
+				6C574ED21EA0829500AEFCD6 /* Sprite.cpp */,
+				6C574ED31EA0829500AEFCD6 /* Sprite.hpp */,
+			);
+			path = GoGUI;
+			sourceTree = "<group>";
+		};
+		6C574EC41EA0336700AEFCD6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6C574ED01EA0631800AEFCD6 /* SDL2_image.framework */,
+				6C574EC51EA0336700AEFCD6 /* SDL2.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		6CBDED201E981F2700F662A8 /* Test */ = {
@@ -122,6 +187,23 @@
 			name = Go;
 			productName = Go;
 			productReference = 6C22D6841E94878100431215 /* Go */;
+			productType = "com.apple.product-type.tool";
+		};
+		6C574EBC1EA032EA00AEFCD6 /* GoGUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6C574EC31EA032EA00AEFCD6 /* Build configuration list for PBXNativeTarget "GoGUI" */;
+			buildPhases = (
+				6C574EB91EA032EA00AEFCD6 /* Sources */,
+				6C574EBA1EA032EA00AEFCD6 /* Frameworks */,
+				6C574EBB1EA032EA00AEFCD6 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GoGUI;
+			productName = GoGUI;
+			productReference = 6C574EBD1EA032EA00AEFCD6 /* GoGUI */;
 			productType = "com.apple.product-type.tool";
 		};
 		6CBDED1E1E981F2700F662A8 /* Test */ = {
@@ -155,6 +237,11 @@
 						DevelopmentTeam = LMU38T4425;
 						ProvisioningStyle = Automatic;
 					};
+					6C574EBC1EA032EA00AEFCD6 = {
+						CreatedOnToolsVersion = 8.3.1;
+						DevelopmentTeam = LMU38T4425;
+						ProvisioningStyle = Automatic;
+					};
 					6CBDED1E1E981F2700F662A8 = {
 						CreatedOnToolsVersion = 8.3;
 						DevelopmentTeam = LMU38T4425;
@@ -176,6 +263,7 @@
 			targets = (
 				6C22D6831E94878100431215 /* Go */,
 				6CBDED1E1E981F2700F662A8 /* Test */,
+				6C574EBC1EA032EA00AEFCD6 /* GoGUI */,
 			);
 		};
 /* End PBXProject section */
@@ -187,6 +275,18 @@
 			files = (
 				6CBDED161E97FE2C00F662A8 /* History.cpp in Sources */,
 				6C22D69E1E95541000431215 /* Board.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6C574EB91EA032EA00AEFCD6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6C574EC01EA032EA00AEFCD6 /* main.cpp in Sources */,
+				6C574ECF1EA044FE00AEFCD6 /* Texture.cpp in Sources */,
+				6C574ED41EA0829500AEFCD6 /* Sprite.cpp in Sources */,
+				6C574EC91EA033DC00AEFCD6 /* Window.cpp in Sources */,
+				6C574ECC1EA0446E00AEFCD6 /* Button.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,6 +408,30 @@
 			};
 			name = Release;
 		};
+		6C574EC11EA032EA00AEFCD6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = LMU38T4425;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		6C574EC21EA032EA00AEFCD6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = LMU38T4425;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		6CBDED241E981F2700F662A8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -354,6 +478,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		6C574EC31EA032EA00AEFCD6 /* Build configuration list for PBXNativeTarget "GoGUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6C574EC11EA032EA00AEFCD6 /* Debug */,
+				6C574EC21EA032EA00AEFCD6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		6CBDED231E981F2700F662A8 /* Build configuration list for PBXNativeTarget "Test" */ = {
 			isa = XCConfigurationList;

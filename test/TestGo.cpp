@@ -18,7 +18,7 @@
  *  HAHAHAHAHAHAHAHA
  *  C++ is a funny language.
  *  I want to test private methods.
- *  And hopefully cause obscure bugs down the line.
+ *  Hopefully this causes obscure bugs down the line.
  **/
 #define private public
 #include "Board.hpp"
