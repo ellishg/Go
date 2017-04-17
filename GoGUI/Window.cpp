@@ -114,9 +114,11 @@ bool Window::launchWindow() {
     
     while (_isValid && _isRunning) {
         
-        _render();
-        
         _onEvent();
+        
+        _onLoop();
+        
+        _render();
     }
     
     return true;

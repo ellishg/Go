@@ -18,13 +18,12 @@ Player opponentPlayer(Player p) {
     return NEITHER;
 }
 
-Board::Board(int _width, int _height, bool _prohibitSuicide) {
+Board::Board(int _size, bool _prohibitSuicide) {
     
-    width = _width;
-    height = _height;
+    size = _size;
     prohibitSuicide = _prohibitSuicide;
     
-    board = new Player[width * height];
+    board = new Player[size * size];
     
     clear();
 }
@@ -34,12 +33,36 @@ Board::~Board() {
     delete [] board;
 }
 
+Player Board::_getStone(int x, int y) {
+    if (_isOnBoard(x, y)) {
+        return board[x + size * y];
+    }
+    return NEITHER;
+}
+
+set<tuple<Player, int, int>> Board::getStones()  {
+    
+    set<tuple<Player, int, int>> stones;
+    
+    for (int x = 0; x < size; x++) {
+        for (int y = 0; y < size; y++) {
+            
+            Player owner = _getStone(x, y);
+            
+            if (owner != NEITHER) {
+                stones.insert(make_tuple(owner, x + 1, y + 1));
+            }
+        }
+    }
+    
+    return stones;
+}
+
 Board & Board::operator=(const Board & other) {
     
     if (this != &other) {
         
-        width = other.width;
-        height = other.height;
+        size = other.size;
         prohibitSuicide = other.prohibitSuicide;
         history = other.history;
         nextToMove = other.nextToMove;
@@ -47,9 +70,9 @@ Board & Board::operator=(const Board & other) {
         winner = other.winner;
         
         delete [] board;
-        board = new Player[width * height];
+        board = new Player[size * size];
         
-        for (size_t i = 0; i < width * height; i++) {
+        for (size_t i = 0; i < size * size; i++) {
             board[i] = other.board[i];
         }
     }
@@ -63,7 +86,7 @@ void Board::clear() {
     
     winner = NEITHER;
     
-    playerToMove = WHITE;
+    _playerToMove = WHITE;
     
     history.clear();
     
@@ -72,7 +95,7 @@ void Board::clear() {
 
 bool Board::move(int x, int y) {
     
-    move_t move = _generateMove(playerToMove, x - 1, y - 1);
+    move_t move = _generateMove(_playerToMove, x - 1, y - 1);
 
     if (move.isValid()) {
         
@@ -80,7 +103,7 @@ bool Board::move(int x, int y) {
         _applyMove(move);
         
         didJustPass = false;
-        playerToMove = opponentPlayer(playerToMove);
+        _playerToMove = opponentPlayer(_playerToMove);
         return true;
     }
     
@@ -96,6 +119,7 @@ bool Board::undo() {
     }
     
     _repealMove(antiMove);
+    _playerToMove = opponentPlayer(_playerToMove);
     
     return true;
 }
@@ -109,13 +133,14 @@ bool Board::redo() {
     }
     
     _applyMove(move);
-    
+    _playerToMove = opponentPlayer(_playerToMove);
+
     return true;
 }
 
 void Board::pass() {
     if (winner == NEITHER && didJustPass) {
-        winner = playerToMove;
+        winner = _playerToMove;
     }
     didJustPass = true;
 }
@@ -159,6 +184,36 @@ set<tuple<int, int>> Board::_getLiberties(set<tuple<int, int>> connected) {
     }
     
     return liberties;
+}
+
+tuple<set<tuple<int, int>>, set<tuple<int, int>>> Board::getLiberties() {
+    
+    set<tuple<int, int>> whiteSet;
+    set<tuple<int, int>> blackSet;
+    
+    set<tuple<int, int>> connected;
+    set<tuple<int, int>> liberties;
+    
+    for (int x = 0; x < size; x++) {
+        for (int y = 0; y < size; y++) {
+            switch(_getStone(x, y)) {
+                case WHITE:
+                    connected = _getConnected(x, y);
+                    liberties = _getLiberties(connected);
+                    whiteSet.insert(liberties.begin(), liberties.end());
+                    break;
+                case BLACK:
+                    connected = _getConnected(x, y);
+                    liberties = _getLiberties(connected);
+                    blackSet.insert(liberties.begin(), liberties.end());
+                    break;
+                case NEITHER:
+                    break;
+            }
+        }
+    }
+    
+    return make_tuple(whiteSet, blackSet);
 }
 
 
@@ -206,7 +261,7 @@ tuple<int, int> Board::getScore() {
     int blackScore = 0;
     int whiteScore = 0;
     
-    for (size_t i = 0; i < width * height; i++) {
+    for (size_t i = 0; i < size * size; i++) {
         if (board[i] == WHITE) {
             whiteScore++;
         }
@@ -219,14 +274,14 @@ tuple<int, int> Board::getScore() {
 }
 
 void Board::_clearBoard() {
-    for (int i = 0; i < width * height; i++) {
+    for (int i = 0; i < size * size; i++) {
         board[i] = NEITHER;
     }
 }
 
 void Board::_setStone(Player p, int x, int y) {
     if (_isOnBoard(x, y)) {
-        board[x + width * y] = p;
+        board[x + size * y] = p;
     }
 }
 
@@ -234,18 +289,18 @@ Player Board::_getStoneOwner(int x, int y) {
     if (!_isOnBoard(x, y)) {
         return NEITHER;
     }
-    return board[x + width * y];
+    return board[x + size * y];
 }
 
 bool Board::_isOnBoard(int x, int y) {
     
-    return (0 <= x && x < width &&
-            0 <= y && y < height);
+    return (0 <= x && x < size &&
+            0 <= y && y < size);
 }
 
 void Board::_clearStone(int x, int y) {
     if (_isOnBoard(x, y)) {
-        board[x + width * y] = NEITHER;
+        board[x + size * y] = NEITHER;
     }
 }
 
@@ -390,7 +445,7 @@ char * Board::_serialize() {
         "SZ[%02d]\n"
         "HA[0]\n"
         "KM[0.0]\n"
-        ";", year, month, day, width);
+        ";", year, month, day, size);
     const char footer[footerLength + 1] = ")\n";
     
     vector<move_t> moves = history.getMoves();
@@ -454,7 +509,7 @@ bool Board::_deserialize(char * data, size_t length) {
         token = strtok(NULL, ";");
     }
     
-    Board newBoard(width, height, prohibitSuicide);
+    Board newBoard(size, prohibitSuicide);
     
     for (tuple<int, int> move : moveList) {
         if (!newBoard.move(get<0>(move), get<1>(move))) {

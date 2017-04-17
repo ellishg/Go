@@ -34,6 +34,8 @@ private:
     
     std::function<void(int, int)> _onMouseClick;
     
+    std::function<void()> _onLoop;
+    
     bool _isValid;
     bool _isRunning;
     
@@ -101,6 +103,11 @@ public:
      *  @return A pointer to the renderer.
      */
     SDL_Renderer * getRenderer() { return _renderer; }
+    
+    /**
+     *  @param onLoop The function to call before every frame.
+     */
+    void setOnLoop(std::function<void()> onLoop) { _onLoop = onLoop; }
     
     /**
      *  Closes the window.

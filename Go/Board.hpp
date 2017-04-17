@@ -23,7 +23,7 @@ class Board {
     
 private:
     
-    int width, height;
+    int size;
     
     Player* board;
     
@@ -33,7 +33,7 @@ private:
     
     Player winner;
     
-    Player playerToMove;
+    Player _playerToMove;
     
     History history;
     
@@ -43,6 +43,14 @@ private:
      *  Clears the stones on the board.
      */
     void _clearBoard();
+    
+    /**
+     *  @param x The x location of the stone.
+     *  @param y The y locaiton of the stone.
+     *  @return The owner of the stone or NEITHER if
+     *              there is no stone at square (x, y).
+     */
+    Player _getStone(int x, int y);
     
     /**
      *  Player p places a stone at square (x, y).
@@ -136,7 +144,7 @@ private:
     
 public:
     
-    Board(int _width = 19, int _height = 19, bool _prohibitSuicide = true);
+    Board(int _size = 19, bool _prohibitSuicide = true);
     
     ~Board();
     
@@ -180,9 +188,19 @@ public:
     Player hasWon();
     
     /**
-     *
+     * @return A tuple of integers representing each player's score.
      */
     std::tuple<int, int> getScore();
+    
+    /**
+     *  @return A set of tuples representing each stone on the board.
+     */
+    std::set<std::tuple<Player, int, int>> getStones();
+    
+    /**
+     *  @return A tuple sets of tuples representing the liberties on the board.
+     */
+    std::tuple<std::set<std::tuple<int, int>>, std::set<std::tuple<int, int>>> getLiberties();
     
     /**
      *  @param dir The directory to save the SGF file to.
@@ -197,6 +215,11 @@ public:
      *              There is no affect if false was returned.
      */
     bool importSGF(const char * dir);
+    
+    /**
+     *  @return The player to move next.
+     */
+    Player playerToMove() { return _playerToMove; }
 };
 
 
