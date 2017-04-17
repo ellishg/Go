@@ -143,6 +143,7 @@ void Board::pass() {
         winner = _playerToMove;
     }
     didJustPass = true;
+    _playerToMove = opponentPlayer(_playerToMove);
 }
 
 set<tuple<int, int>> Board::_getAdjacent(Player p, int x, int y) {
