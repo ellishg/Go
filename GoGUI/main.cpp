@@ -198,15 +198,15 @@ void onLoop() {
     
     tuple<int, int> s = myBoard->getScore();
     char string[30];
-    snprintf(string, 30, "White: %d Black: %d", get<0>(s), get<1>(s));
+    snprintf(string, 30, "Green: %d Red: %d", get<0>(s), get<1>(s));
     score->setText(string);
     
     switch (myBoard->playerToMove()) {
         case WHITE:
-            alert->setText("White to move.");
+            alert->setText("Green to move.");
             break;
         case BLACK:
-            alert->setText("Black to move.");
+            alert->setText("Red to move.");
             break;
         default:
             break;
@@ -216,10 +216,10 @@ void onLoop() {
     if (winner != NEITHER) {
         switch (winner) {
             case WHITE:
-                alert->setText("White has won!");
+                alert->setText("Green has won!");
                 break;
             case BLACK:
-                alert->setText("Black has won!");
+                alert->setText("Red has won!");
                 break;
             default:
                 break;
