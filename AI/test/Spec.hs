@@ -13,16 +13,17 @@ main = do putStrLn ""
 
 
 runTest :: (Bool, String) -> String
-runTest (True , s) = (show s) ++ " passed!"
-runTest (False, s) = (show s) ++ " failed!"
+runTest (True , s) = s ++ ": PASSED"
+runTest (False, s) = s ++ ": FAILED"
 
 allTests :: [(Bool, String)]
 allTests = [ (test_validIntersection, "validIntersection")
            , (test_invalidIntersection, "invalidIntersection")
            , (test_cardinalDirections, "cardinalDirections")
-           , (test_groups, "groups")
-           , (test_liberties, "liberties")
+           , (test_groups, "getGroup")
+           , (test_liberties, "getLiberties")
            , (test_applyMoves, "applyMove")
+           , (test_getOwners, "getOwner")
            ]
 
 test_validIntersection = all validIntersection [ Intersection 0 0
@@ -50,6 +51,12 @@ intersections = [
   , Intersection 1 1
   ]
 
+owners :: [Player]
+owners = [
+    White
+  , White
+  ]
+
 groups :: [Group]
 groups = [
     Group White (S.fromList [Intersection 2 2, Intersection 2 3, Intersection 1 2])
@@ -61,6 +68,9 @@ liberties = [
       S.fromList [Intersection 2 4, Intersection 1 3, Intersection 0 2, Intersection 1 1, Intersection 2 1, Intersection 3 2, Intersection 3 3]
     , S.fromList [Intersection 2 1, Intersection 1 2]
   ]
+
+test_getOwner (loc, board, owner) = getOwner loc board == owner
+test_getOwners = all test_getOwner $ zip3 intersections boards owners
 
 test_group (loc, board, group) = getGroup loc board == group
 test_groups = all test_group $ zip3 intersections boards groups

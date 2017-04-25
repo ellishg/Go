@@ -196,7 +196,7 @@ makeMove g board = do
 computerVSComputer g board = do
   let (g1, g2) = split g
   let (g3, g4) = split g1
-  let moveA = findBestMove g2 Black 5 10 board
+  let moveA = findBestMove g2 Black 5 30 board
   let boardA = applyMove board moveA
   print boardA
   let moveB = findBestMove g3 White 15 100 boardA
