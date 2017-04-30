@@ -24,6 +24,7 @@
 		6CBDED221E981F2700F662A8 /* TestGo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CBDED211E981F2700F662A8 /* TestGo.cpp */; };
 		6CBDED281E985E8900F662A8 /* Board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C22D69C1E95541000431215 /* Board.cpp */; };
 		6CBDED291E985E8900F662A8 /* History.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CBDED141E97FE2C00F662A8 /* History.cpp */; };
+		6CC8B87F1EB5584500E3257C /* AI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CC8B87D1EB5570500E3257C /* AI.cpp */; };
 		6CE128441EA2B8940043BEC2 /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CE128421EA2B8940043BEC2 /* Text.cpp */; };
 		6CE128461EA2B9620043BEC2 /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CE128451EA2B9620043BEC2 /* SDL2_ttf.framework */; };
 /* End PBXBuildFile section */
@@ -80,6 +81,7 @@
 		6CBDED171E97FE9C00F662A8 /* Move.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Move.hpp; sourceTree = "<group>"; };
 		6CBDED1F1E981F2700F662A8 /* Test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Test; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CBDED211E981F2700F662A8 /* TestGo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestGo.cpp; sourceTree = "<group>"; };
+		6CC8B87D1EB5570500E3257C /* AI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AI.cpp; sourceTree = "<group>"; };
 		6CE128411EA2AD340043BEC2 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = SOURCE_ROOT; };
 		6CE128421EA2B8940043BEC2 /* Text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Text.cpp; sourceTree = "<group>"; };
 		6CE128431EA2B8940043BEC2 /* Text.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Text.hpp; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				6C22D69C1E95541000431215 /* Board.cpp */,
+				6CC8B87D1EB5570500E3257C /* AI.cpp */,
 				6C22D69D1E95541000431215 /* Board.hpp */,
 				6CBDED171E97FE9C00F662A8 /* Move.hpp */,
 				6CBDED141E97FE2C00F662A8 /* History.cpp */,
@@ -298,6 +301,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CC8B87F1EB5584500E3257C /* AI.cpp in Sources */,
 				6CB8B0E61EA3DD4400674B40 /* Board.cpp in Sources */,
 				6CB8B0E71EA3DD4400674B40 /* Board.hpp in Sources */,
 				6CB8B0E81EA3DD4400674B40 /* Move.hpp in Sources */,
@@ -438,6 +442,7 @@
 					"$(inherited)",
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
 				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -450,6 +455,7 @@
 					"$(inherited)",
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
 				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

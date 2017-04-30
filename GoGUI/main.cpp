@@ -22,24 +22,33 @@ using namespace std;
 
 const int windowWidth = 565;
 const int windowHeight = 645;
-const int boardNumSquares = 19;
-const int boardSize = 460;
+int boardNumSquares = 19;
+const int boardSize = 420;
 const int boardX = (windowWidth - boardSize) / 2;
-const int boardY = 40;
-const int stoneSize = boardSize / boardNumSquares;
-const int numStonesPerColor = boardNumSquares * boardNumSquares / 2;
+const int boardY = 70;
+int stoneSize = boardSize / boardNumSquares;
+const int maxStonesPerColor = 19 * 19 / 2;
 
 bool showLiberties = false;
-bool playComputer = true;
+bool playComputer = false;
 
+size_t breadth;
+size_t depth;
+
+Sprite * board;
+Texture * boardTexture19;
+Texture * boardTexture13;
+Texture * boardTexture9;
 Text * alert;
 Text * score;
+Text * info;
+Text * thinking;
 Window * myWindow;
 Board * myBoard;
-Sprite * whitePieces[numStonesPerColor];
-Sprite * blackPieces[numStonesPerColor];
-Sprite * whiteLiberties[numStonesPerColor];
-Sprite * blackLiberties[numStonesPerColor];
+Sprite * whitePieces[maxStonesPerColor];
+Sprite * blackPieces[maxStonesPerColor];
+Sprite * whiteLiberties[maxStonesPerColor];
+Sprite * blackLiberties[maxStonesPerColor];
 
 void importSGF() {
     const char * filename = "/Users/ellis/Desktop/game.sgf";
@@ -55,14 +64,58 @@ void newGame() {
     myBoard->clear();
 }
 
+void updateBoardSize() {
+    stoneSize = boardSize / boardNumSquares;
+    for (size_t i = 0; i < maxStonesPerColor; i++) {
+        whitePieces[i]->width = stoneSize;
+        whitePieces[i]->height = stoneSize;
+        blackPieces[i]->width = stoneSize;
+        blackPieces[i]->height = stoneSize;
+        whiteLiberties[i]->width = stoneSize;
+        whiteLiberties[i]->height = stoneSize;
+        blackLiberties[i]->width = stoneSize;
+        blackLiberties[i]->height = stoneSize;
+    }
+    delete myBoard;
+    myBoard = new Board(boardNumSquares);
+
+}
+
+void makeBoard19() {
+    board->_texture = boardTexture19;
+    boardNumSquares = 19;
+    updateBoardSize();
+}
+
+void makeBoard13() {
+    board->_texture = boardTexture13;
+    boardNumSquares = 13;
+    updateBoardSize();
+}
+
+void makeBoard9() {
+    board->_texture = boardTexture9;
+    boardNumSquares = 9;
+    updateBoardSize();
+}
+
 void vsHuman() {
     newGame();
     playComputer = false;
 }
 
-void vsComputer() {
+void vsComputerNovice() {
     newGame();
     playComputer = true;
+    breadth = 200;
+    depth = 7;
+}
+
+void vsComputerExpert() {
+    newGame();
+    playComputer = true;
+    breadth = 500;
+    depth = 7;
 }
 
 void undo() {
@@ -114,6 +167,18 @@ void onMouseClick(int x, int y) {
 
 void onLoop() {
     
+    static Player oldPlayer = WHITE;
+    if (oldPlayer != myBoard->playerToMove()) { // Hack to render stone before computer starts to think.
+        if (playComputer && oldPlayer == WHITE) {
+            thinking->setText("Thinking...");
+        }
+        oldPlayer = myBoard->playerToMove();
+    }
+    else if (playComputer && myBoard->playerToMove() == BLACK) {
+        myBoard->applyBestMove(breadth, depth);
+        thinking->setText("");
+    }
+    
     set<tuple<Player, int, int>> stones = myBoard->getStones();
     
     size_t iWhiteStone = 0;
@@ -141,12 +206,12 @@ void onLoop() {
         }
     }
     
-    for (; iWhiteStone < numStonesPerColor; iWhiteStone++) {
+    for (; iWhiteStone < maxStonesPerColor; iWhiteStone++) {
         whitePieces[iWhiteStone]->x = -100;
         whitePieces[iWhiteStone]->y = -100;
     }
     
-    for (; iBlackStone < numStonesPerColor; iBlackStone++) {
+    for (; iBlackStone < maxStonesPerColor; iBlackStone++) {
         blackPieces[iBlackStone]->x = -100;
         blackPieces[iBlackStone]->y = -100;
     }
@@ -177,18 +242,18 @@ void onLoop() {
             iBlackLiberty++;
         }
         
-        for (; iWhiteLiberty < numStonesPerColor; iWhiteLiberty++) {
+        for (; iWhiteLiberty < maxStonesPerColor; iWhiteLiberty++) {
             whiteLiberties[iWhiteLiberty]->x = -100;
             whiteLiberties[iWhiteLiberty]->y = -100;
         }
         
-        for (; iBlackLiberty < numStonesPerColor; iBlackLiberty++) {
+        for (; iBlackLiberty < maxStonesPerColor; iBlackLiberty++) {
             blackLiberties[iBlackLiberty]->x = -100;
             blackLiberties[iBlackLiberty]->y = -100;
         }
     }
     else {
-        for (size_t i = 0; i < numStonesPerColor; i++) {
+        for (size_t i = 0; i < maxStonesPerColor; i++) {
             whiteLiberties[i]->x = -100;
             whiteLiberties[i]->y = -100;
             blackLiberties[i]->x = -100;
@@ -225,6 +290,13 @@ void onLoop() {
                 break;
         }
     }
+    
+    if (playComputer) {
+        info->setText("Against Computer");
+    }
+    else {
+        info->setText("Against Human");
+    }
 }
 
 int main(int argc, const char * argv[]) {
@@ -237,17 +309,23 @@ int main(int argc, const char * argv[]) {
     
     SDL_Renderer * renderer = myWindow->getRenderer();
     
-    Texture * boardTexture = new Texture("/Users/ellis/GitHub/Go/assets/go-board-19x19.png", renderer);
+    boardTexture19 = new Texture("/Users/ellis/GitHub/Go/assets/go-board-19x19.png", renderer);
+    boardTexture13 = new Texture("/Users/ellis/GitHub/Go/assets/go-board-13x13.png", renderer);
+    boardTexture9 = new Texture("/Users/ellis/GitHub/Go/assets/go-board-9x9.png", renderer);
     Texture * quitTexture = new Texture("/Users/ellis/GitHub/Go/assets/button_quit.png", renderer);
     Texture * passTexture = new Texture("/Users/ellis/GitHub/Go/assets/button_pass.png", renderer);
     Texture * undoTexture = new Texture("/Users/ellis/GitHub/Go/assets/button_undo.png", renderer);
     Texture * redoTexture = new Texture("/Users/ellis/GitHub/Go/assets/button_redo.png", renderer);
     Texture * toggleLibertiesTexture = new Texture("/Users/ellis/GitHub/Go/assets/button_toggle-liberties.png", renderer);
     Texture * newGameTexture = new Texture("/Users/ellis/GitHub/Go/assets/button_new-game.png", renderer);
+    Texture * button19Texture = new Texture("/Users/ellis/GitHub/Go/assets/button_19x19.png", renderer);
+    Texture * button13Texture = new Texture("/Users/ellis/GitHub/Go/assets/button_13x13.png", renderer);
+    Texture * button9Texture = new Texture("/Users/ellis/GitHub/Go/assets/button_9x9.png", renderer);
     Texture * importTexture = new Texture("/Users/ellis/GitHub/Go/assets/button_import.png", renderer);
     Texture * exportTexture = new Texture("/Users/ellis/GitHub/Go/assets/button_export.png", renderer);
     Texture * vsHumanTexture = new Texture("/Users/ellis/GitHub/Go/assets/button_vs-human.png", renderer);
-    Texture * vsComputerTexture = new Texture("/Users/ellis/GitHub/Go/assets/button_vs-computer.png", renderer);
+    Texture * noviceTexture = new Texture("/Users/ellis/GitHub/Go/assets/button_novice.png", renderer);
+    Texture * expertTexture = new Texture("/Users/ellis/GitHub/Go/assets/button_expert.png", renderer);
     Texture * whitePiecetexture = new Texture("/Users/ellis/GitHub/Go/assets/green_stone.png", renderer);
     Texture * blackPiecetexture = new Texture("/Users/ellis/GitHub/Go/assets/red_stone.png", renderer);
     Texture * whiteLibertytexture = new Texture("/Users/ellis/GitHub/Go/assets/green_liberty.png", renderer);
@@ -255,14 +333,14 @@ int main(int argc, const char * argv[]) {
     
     TTF_Font * font = TTF_OpenFont("/Users/ellis/GitHub/Go/assets/AppleGaramond.ttf", 24);
 
-    Sprite * board = new Sprite(boardTexture, {{0, 0, 2400, 2400}});
+    board = new Sprite(boardTexture19, {{0, 0, 2400, 2400}});
     board->x = boardX;
     board->y = boardY;
     board->width = boardSize;
     board->height = boardSize;
     myWindow->addSprite(board);
     
-    for (size_t i = 0; i < numStonesPerColor; i++) {
+    for (size_t i = 0; i < maxStonesPerColor; i++) {
         whitePieces[i] = new Sprite(whitePiecetexture, {{0, 0, 100, 100}});
         blackPieces[i] = new Sprite(blackPiecetexture, {{0, 0, 100, 100}});
         whiteLiberties[i] = new Sprite(whiteLibertytexture, {{0, 0, 100, 100}});
@@ -298,6 +376,13 @@ int main(int argc, const char * argv[]) {
     score = new Text(renderer, 200, 5, font);
     myWindow->addText(score);
     
+    info = new Text(renderer, 400, 5, font);
+    myWindow->addText(info);
+    
+    thinking = new Text(renderer, 400, 35, font);
+    thinking->setText("");
+    myWindow->addText(thinking);
+    
     Button quitButton({5, 600, 82, 40}, quitTexture, {0, 0, 82, 40}, {0, 40, 82, 40}, quit);
     myWindow->addButton(quitButton);
     
@@ -316,6 +401,15 @@ int main(int argc, const char * argv[]) {
     Button newGameButton({5, 510, 145, 40}, newGameTexture, {0, 0, 145, 40}, {0, 40, 145, 40}, newGame);
     myWindow->addButton(newGameButton);
     
+    Button new19Button({5, 555, 95, 40}, button19Texture, {0, 0, 95, 40}, {0, 40, 95, 40}, makeBoard19);
+    myWindow->addButton(new19Button);
+
+    Button new13Button({105, 555, 95, 40}, button13Texture, {0, 0, 95, 40}, {0, 40, 95, 40}, makeBoard13);
+    myWindow->addButton(new13Button);
+    
+    Button new9Button({205, 555, 73, 40}, button9Texture, {0, 0, 73, 40}, {0, 40, 73, 40}, makeBoard9);
+    myWindow->addButton(new9Button);
+    
     Button importButton({155, 510, 105, 40}, importTexture, {0, 0, 105, 40}, {0, 40, 105, 40}, importSGF);
     myWindow->addButton(importButton);
     
@@ -325,25 +419,36 @@ int main(int argc, const char * argv[]) {
     Button vsHumanButton({372, 510, 135, 40}, vsHumanTexture, {0, 0, 135, 40}, {0, 40, 135, 40}, vsHuman);
     myWindow->addButton(vsHumanButton);
     
-    Button vsComputerButton({372, 555, 164, 40}, vsComputerTexture, {0, 0, 164, 40}, {0, 40, 164, 40}, vsComputer);
-    myWindow->addButton(vsComputerButton);
-    
+    Button noviceButton({283, 555, 107, 40}, noviceTexture, {0, 0, 107, 40}, {0, 40, 107, 40}, vsComputerNovice);
+    myWindow->addButton(noviceButton);
+
+    Button expertButton({395, 555, 104, 40}, expertTexture, {0, 0, 104, 40}, {0, 40, 104, 40}, vsComputerExpert);
+    myWindow->addButton(expertButton);
+
     myWindow->launchWindow();
     
     TTF_CloseFont(font);
     delete alert;
     delete score;
+    delete info;
+    delete thinking;
     delete board;
-    delete boardTexture;
+    delete boardTexture19;
+    delete boardTexture13;
+    delete boardTexture9;
     delete quitTexture;
     delete undoTexture;
     delete redoTexture;
     delete newGameTexture;
+    delete button19Texture;
+    delete button13Texture;
+    delete button9Texture;
     delete toggleLibertiesTexture;
     delete importTexture;
     delete exportTexture;
     delete vsHumanTexture;
-    delete vsComputerTexture;
+    delete noviceTexture;
+    delete expertTexture;
     delete whitePiecetexture;
     delete blackPiecetexture;
     delete whiteLibertytexture;
@@ -351,7 +456,7 @@ int main(int argc, const char * argv[]) {
     delete myWindow;
     delete myBoard;
     
-    for (size_t i = 0; i < numStonesPerColor; i++) {
+    for (size_t i = 0; i < maxStonesPerColor; i++) {
         delete whitePieces[i];
         delete blackPieces[i];
     }

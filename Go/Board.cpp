@@ -110,6 +110,19 @@ bool Board::move(int x, int y) {
     return false;
 }
 
+void Board::_applyMove(move_t move) {
+    
+    int x = get<0>(move.placedStone);
+    int y = get<1>(move.placedStone);
+    
+    _setStone(move.mover, x, y);
+    
+    for (auto killed : move.killedStones) {
+        _clearStone(get<0>(killed), get<1>(killed));
+    }
+}
+
+
 bool Board::undo() {
     
     move_t antiMove = history.popMove();
@@ -302,18 +315,6 @@ bool Board::_isOnBoard(int x, int y) {
 void Board::_clearStone(int x, int y) {
     if (_isOnBoard(x, y)) {
         board[x + size * y] = NEITHER;
-    }
-}
-
-void Board::_applyMove(move_t move) {
-    
-    int x = get<0>(move.placedStone);
-    int y = get<1>(move.placedStone);
-    
-    _setStone(move.mover, x, y);
-    
-    for (auto killed : move.killedStones) {
-        _clearStone(get<0>(killed), get<1>(killed));
     }
 }
 

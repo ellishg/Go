@@ -39,7 +39,7 @@ shuffle' xs gen = runST (do
 
 -----------------------------------------------------
 -- Model
-boardSize = 5
+boardSize = 9
 
 data Board = Board (M.Map Intersection Player)
   deriving (Eq, Ord)

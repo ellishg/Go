@@ -17,12 +17,12 @@ class Sprite {
     
 private:
     
-    Texture * _texture;
-    
     std::vector<SDL_Rect> _rects;
     
 public:
-    
+
+    Texture * _texture;
+
     int x, y;
     
     int width, height;

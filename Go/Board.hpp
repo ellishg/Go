@@ -10,6 +10,7 @@
 #define Board_hpp
 
 #include <vector>
+//#include <algorithm>
 #include <tuple>
 #include <set>
 #include <queue>
@@ -142,6 +143,22 @@ private:
      */
     bool _deserialize(char * data, size_t length);
     
+    /**
+     *  Makes depth random valid moves.
+     *  @param depth The number of moves to make
+     */
+    void _simulateGame(size_t depth);
+    
+    /**
+     *  @return A vector of all valid moves.
+     */
+    std::vector<move_t> _allValidMoves();
+    
+    /**
+     *  @return A random valid move.
+     */
+    move_t _randomMove();
+    
 public:
     
     Board(int _size = 19, bool _prohibitSuicide = true);
@@ -161,6 +178,13 @@ public:
      *  @return True if the move was successfully made.
      */
     bool move(int x, int y);
+    
+    /**
+     *  The computer will search for a good move and apply it.
+     *  @param breadth The number of random simulations to check.
+     *  @param depth The depth of each simulation to check.
+     */
+    void applyBestMove(size_t breadth, size_t depth);
     
     /**
      *  Takes back the previous move and preserves history.
